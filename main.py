@@ -58,7 +58,7 @@ async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     for key, value in MENU_RESTURANT.items():
         button_list.append(
             [InlineKeyboardButton(
-                f"{value['name']} {value['price']} تومان",
+                f"{value['name']} - {value['price']} تومان",
                 callback_data=key
             )]
         )
@@ -72,7 +72,7 @@ async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     for key, value in MENU_CAFE.items():
         button_list.append(
             [InlineKeyboardButton(
-                f"{value['name']} {value['price']} تومان",
+                f"{value['name']} - {value['price']} تومان",
                 callback_data=key
             )]
         )
