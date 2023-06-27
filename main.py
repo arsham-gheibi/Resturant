@@ -92,9 +92,9 @@ async def show_Receipt(update: Update, context: ContextTypes.DEFAULT_TYPE):
         MENU_RESTURANT.get(data) is not None or
         MENU_CAFE.get(data) is not None
     ):
-        ORDERS[
-            query.from_user.id
-        ] = ORDERS.get(query.from_user.id, []).append(data)
+        user_orders = ORDERS.get(query.from_user.id, [])
+        user_orders.append(data)
+        ORDERS[query.from_user.id] = user_orders
 
         await update.message.reply_text(
             'آیتم مورد نظر با موفقیت به سبد خرید اضافه شد🛍'
