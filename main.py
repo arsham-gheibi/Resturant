@@ -102,8 +102,6 @@ async def show_Receipt(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"{emoji}{item['name']} با موفقیت به سبد خرید اضافه شد🛍"
     )
 
-    print(ORDERS)
-
 
 #     query.answer()
 #     final_order = 'فیمت کل :' + '\n' + str(menu_cofe.values) + str(
