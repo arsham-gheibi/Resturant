@@ -96,9 +96,7 @@ async def show_Receipt(update: Update, context: ContextTypes.DEFAULT_TYPE):
         user_orders.append(data)
         ORDERS[query.from_user.id] = user_orders
 
-        await update.message.reply_text(
-            'آیتم مورد نظر با موفقیت به سبد خرید اضافه شد🛍'
-        )
+        await query.message.reply_text('آیتم مورد نظر با موفقیت به سبد خرید اضافه شد🛍')
 
         print(ORDERS)
 
