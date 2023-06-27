@@ -89,15 +89,17 @@ async def show_Receipt(update: Update, context: ContextTypes.DEFAULT_TYPE):
     data = int(query.data)
 
     item = MENU_RESTURANT.get(data)
+    emoji = '🥙'
     if item is None:
         item = MENU_CAFE.get(data)
+        emoji = '🧋'
 
     user_orders = ORDERS.get(query.from_user.id, [])
     user_orders.append(data)
     ORDERS[query.from_user.id] = user_orders
 
     await query.message.reply_text(
-        f"آیتم مورد نظر با موفقیت به سبد خرید اضافه شد🛍\n\n{item['name']} - {item['price']} تومان"
+        f"آیتم مورد نظر با موفقیت به سبد خرید اضافه شد🛍\n\n{emoji}{item['name']} - {item['price']} تومان"
     )
 
     print(ORDERS)
