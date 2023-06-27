@@ -88,17 +88,18 @@ async def show_Receipt(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.answer()
     data = int(query.data)
 
-    if (
-        MENU_RESTURANT.get(data) is not None or
-        MENU_CAFE.get(data) is not None
-    ):
-        user_orders = ORDERS.get(query.from_user.id, [])
-        user_orders.append(data)
-        ORDERS[query.from_user.id] = user_orders
+    item = MENU_RESTURANT.get(data) if item is not None\
+        else MENU_CAFE.get(data)
 
-        await query.message.reply_text('آیتم مورد نظر با موفقیت به سبد خرید اضافه شد🛍')
+    user_orders = ORDERS.get(query.from_user.id, [])
+    user_orders.append(data)
+    ORDERS[query.from_user.id] = user_orders
 
-        print(ORDERS)
+    await query.message.reply_text(
+        f"آیتم مورد نظر با موفقیت به سبد خرید اضافه شد🛍\n\n{item['name']} - {item['price']} تومان"
+    )
+
+    print(ORDERS)
 
 
 #     query.answer()
