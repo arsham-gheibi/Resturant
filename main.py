@@ -88,8 +88,9 @@ async def show_Receipt(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.answer()
     data = int(query.data)
 
-    item = MENU_RESTURANT.get(data) if item is not None \
-        else MENU_CAFE.get(data)
+    item = MENU_RESTURANT.get(data)
+    if item is None:
+        item = MENU_CAFE.get(data)
 
     user_orders = ORDERS.get(query.from_user.id, [])
     user_orders.append(data)
