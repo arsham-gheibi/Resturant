@@ -78,7 +78,7 @@ async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
     await update.message.reply_text(
-        'رستوران صدرسان🍛',
+        'کافه دیلی دوز☕️',
         reply_markup=InlineKeyboardMarkup(button_list)
     )
 
