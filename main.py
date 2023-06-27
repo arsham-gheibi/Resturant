@@ -99,18 +99,8 @@ async def show_Receipt(update: Update, context: ContextTypes.DEFAULT_TYPE):
     ORDERS[query.from_user.id] = user_orders
 
     await query.message.reply_text(
-        f"{emoji}{item['name']} با موفقیت به سبد خرید اضافه شد🛍"
+        f"{emoji}{item['name']} با موفقیت به سبد خرید اضافه شد"
     )
-
-
-#     query.answer()
-#     final_order = 'فیمت کل :' + '\n' + str(menu_cofe.values) + str(
-#         menu_restaureant.values) + '\n سفارشات :' + str(menu_restaureant.keys) + str(menu_cofe.keys)
-#     final_order += '\n'+'تاریخ ثبت سفارش :' + \
-#         str(time.ctime(time.time())) + 'روز خوبی را برای شما ارزومندیم :)'
-#     query.edit_message_text(final_order)
-# # Responses
-#     # Privet_Chat
 
 
 def handler_response(text: str):
