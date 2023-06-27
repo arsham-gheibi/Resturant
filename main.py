@@ -86,7 +86,23 @@ async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def show_Receipt(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    print(query)
+    data = int(query.data)
+
+    if (
+        MENU_RESTURANT.get(data) is not None or
+        MENU_CAFE.get(data) is not None
+    ):
+        ORDERS[
+            query.from_user.id
+        ] = ORDERS.get(query.from_user.id, []).append(data)
+
+        await update.message.reply_text(
+            'آیتم مورد نظر با موفقیت به سبد خرید اضافه شد🛍'
+        )
+
+        print(ORDERS)
+
+
 #     query.answer()
 #     final_order = 'فیمت کل :' + '\n' + str(menu_cofe.values) + str(
 #         menu_restaureant.values) + '\n سفارشات :' + str(menu_restaureant.keys) + str(menu_cofe.keys)
