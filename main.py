@@ -50,13 +50,13 @@ async def restaurant(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    text = 'رستوران صدرسان'
+    text = 'رستوران صدرسان\n'
     for key, value in menu_restaureant.items():
         text += f'\n{key} {value} تومان'
 
     await update.message.reply_text(text)
 
-    text = 'کافه دیلی دوز'
+    text = 'کافه دیلی دوز\n'
     for key, value in menu_cofe.items():
         text += f'\n{key} {value} تومان'
 
