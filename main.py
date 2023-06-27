@@ -1,5 +1,5 @@
-from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
-from telegram.ext import MessageHandler, Application, CommandHandler, filters, ContextTypes
+from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
+from telegram.ext import MessageHandler, Application, CommandHandler, CallbackQueryHandler, filters, ContextTypes
 
 
 TOKEN = '6084342914:AAEik1o1xcL0yRgWvYuRPWkQiDSxBQV45nE'
@@ -83,8 +83,10 @@ async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-# async def show_Receipt(update: Update, context: ContextTypes.DEFAULT_TYPE):
-#     query = update.callback_query
+async def show_Receipt(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    print(query)
 #     query.answer()
 #     final_order = 'فیمت کل :' + '\n' + str(menu_cofe.values) + str(
 #         menu_restaureant.values) + '\n سفارشات :' + str(menu_restaureant.keys) + str(menu_cofe.keys)
@@ -157,7 +159,7 @@ if __name__ == '__main__':
     app.add_handler(CommandHandler('contact', contact))
     app.add_handler(CommandHandler('restaurant', restaurant))
     app.add_handler(CommandHandler('menu', menu))
-    # app.add_handler(CallbackQuery(show_Receipt))
+    app.add_handler(CallbackQueryHandler(show_Receipt))
 
     # Message
     app.add_handler(MessageHandler(filters.TEXT, handle_message))
