@@ -7,16 +7,16 @@ TOKEN = '6084342914:AAEik1o1xcL0yRgWvYuRPWkQiDSxBQV45nE'
 BOT_USERNAME = 'http://t.me/Restaurant212_bot'
 
 menu_restaureant = {
-    'cholo mahi': 198,
-    'cholo akbar joje': 189,
-    'cholo kabab kobide': 135,
-    'cholo joje': 85
+    'چلو ماهی': 198000,
+    'اکبر جوجه': 189000,
+    'چلو کباب کوبیده': 135000,
+    'چلو جوجه': 85000
 }
 
 menu_cofe = {
-    'moka': 75,
-    'late': 80,
-    'cappuccino': 65
+    'موکا': 75000,
+    'لته': 80000,
+    'کاپوچینو': 65000
 }
 
 
@@ -50,16 +50,17 @@ async def restaurant(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text('''رستوران صدرسان 
-cholo mahi : 198
-cholo akbar joje : 189
-cholo kabab kobide : 135 
-chollo joje : 85
-'''+'\n*****************************************\n'+'''کافه دیلی دوز 
-moka : 75
-late : 69
-cappuccino : 65
-''')
+    text = 'رستوران صدرسان'
+    for key, value in menu_restaureant.items():
+        text += f'\n{key} {value} تومان'
+
+    await update.message.reply_text(text)
+
+    text = 'کافه دیلی دوز'
+    for key, value in menu_cofe.items():
+        text += f'\n{key} {value} تومان'
+
+    await update.message.reply_text(text)
 
 
 async def order_food(update: Update, context: ContextTypes.DEFAULT_TYPE):
