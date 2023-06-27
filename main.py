@@ -1,4 +1,3 @@
-import time
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from telegram.ext import MessageHandler, Application, CommandHandler, filters, ContextTypes
 
@@ -55,17 +54,33 @@ async def restaurant(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    text = 'رستوران صدرسان🍛\n'
-    for value in MENU_RESTURANT.values():
-        text += f"\n{value['name']} {value['price']} تومان"
+    button_list = []
+    for key, value in MENU_RESTURANT.items():
+        button_list.append(
+            InlineKeyboardButton(
+                f"{value['name']} {value['price']} تومان",
+                callback_data=key
+            )
+        )
 
-    await update.message.reply_text(text)
+    await update.message.reply_text(
+        'رستوران صدرسان🍛',
+        reply_markup=InlineKeyboardMarkup(button_list)
+    )
 
-    text = 'کافه دیلی دوز☕️\n'
-    for value in MENU_CAFE.values():
-        text += f"\n{value['name']} {value['price']} تومان"
+    button_list = []
+    for key, value in MENU_CAFE.items():
+        button_list.append(
+            InlineKeyboardButton(
+                f"{value['name']} {value['price']} تومان",
+                callback_data=key
+            )
+        )
 
-    await update.message.reply_text(text)
+    await update.message.reply_text(
+        'رستوران صدرسان🍛',
+        reply_markup=InlineKeyboardMarkup(button_list)
+    )
 
 
 # async def show_Receipt(update: Update, context: ContextTypes.DEFAULT_TYPE):
