@@ -99,7 +99,7 @@ async def show_Receipt(update: Update, context: ContextTypes.DEFAULT_TYPE):
     ORDERS[query.from_user.id] = user_orders
 
     await query.message.reply_text(
-        f"آیتم مورد نظر با موفقیت به سبد خرید اضافه شد🛍\n\n{emoji}{item['name']} - {item['price']} تومان"
+        f"{emoji}{item['name']} مورد نظر با موفقیت به سبد خرید اضافه شد🛍"
     )
 
     print(ORDERS)
