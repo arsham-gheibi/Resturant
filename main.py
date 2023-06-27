@@ -8,7 +8,6 @@ BOT_USERNAME = 'http://t.me/Restaurant212_bot'
 
 ORDERS = {}
 
-
 MENU_RESTURANT = {
     4523: {'name': 'چلو ماهی', 'price': 198000},
     4627:  {'name': 'اکبر جوجه', 'price': 189000},
