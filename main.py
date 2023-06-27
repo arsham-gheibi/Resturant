@@ -6,17 +6,23 @@ from telegram.ext import MessageHandler, Application, CommandHandler, filters, C
 TOKEN = '6084342914:AAEik1o1xcL0yRgWvYuRPWkQiDSxBQV45nE'
 BOT_USERNAME = 'http://t.me/Restaurant212_bot'
 
-menu_restaureant = {
-    'چلو ماهی': 198000,
-    'اکبر جوجه': 189000,
-    'چلو کباب کوبیده': 135000,
-    'چلو جوجه': 85000
+ORDERS = {}
+
+
+MENU_RESTURANT = {
+    4523: {'name': 'چلو ماهی', 'price': 198000},
+    4627:  {'name': 'اکبر جوجه', 'price': 189000},
+    4457: {'name': 'چلو کباب کوبیده', 'price': 135000},
+    4199:   {'name': 'چلو جوجه', 'price': 85000}
 }
 
-menu_cofe = {
-    'موکا': 75000,
-    'لته': 80000,
-    'کاپوچینو': 65000
+
+MENU_CAFE = {
+    3689: {'name': 'موکا', 'price': 75000},
+    3562:  {'name': 'لته', 'price': 80000},
+    3789: {'name': 'کاپوچینو', 'price': 65000},
+    3910:  {'name': 'اسپرسو', 'price': 35000},
+    3018:   {'name': 'آیس امریکانو', 'price': 55000}
 }
 
 
@@ -51,44 +57,28 @@ async def restaurant(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = 'رستوران صدرسان🍛\n'
-    for key, value in menu_restaureant.items():
-        text += f'\n{key} {value} تومان'
+    for value in MENU_RESTURANT.values():
+        text += f"\n{value['name']} {value['price']} تومان"
 
     await update.message.reply_text(text)
 
     text = 'کافه دیلی دوز☕️\n'
-    for key, value in menu_cofe.items():
-        text += f'\n{key} {value} تومان'
+    for value in MENU_CAFE.values():
+        text += f"\n{value['name']} {value['price']} تومان"
 
     await update.message.reply_text(text)
 
 
-async def order_food(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    food = []
-    for i in menu_restaureant:
-        food.append(InlineKeyboardButton(menu_restaureant.keys,
-                    callback_data=menu_restaureant.values))
-    await update.message.reply_text('please serve your order :', reply_markup=InlineKeyboardMarkup(food))
-
-
-async def order_cofe(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    cofe = []
-    for j in menu_cofe:
-        cofe.append((InlineKeyboardButton(
-            menu_cofe.keys, callback_data=menu_cofe.values)))
-    await update.message.reply_text('please serve your order : ', reply_markup=InlineKeyboardMarkup(cofe))
-
-
-async def show_Receipt(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    query = update.callback_query
-    query.answer()
-    final_order = 'فیمت کل :' + '\n' + str(menu_cofe.values) + str(
-        menu_restaureant.values) + '\n سفارشات :' + str(menu_restaureant.keys) + str(menu_cofe.keys)
-    final_order += '\n'+'تاریخ ثبت سفارش :' + \
-        str(time.ctime(time.time())) + 'روز خوبی را برای شما ارزومندیم :)'
-    query.edit_message_text(final_order)
-# Responses
-    # Privet_Chat
+# async def show_Receipt(update: Update, context: ContextTypes.DEFAULT_TYPE):
+#     query = update.callback_query
+#     query.answer()
+#     final_order = 'فیمت کل :' + '\n' + str(menu_cofe.values) + str(
+#         menu_restaureant.values) + '\n سفارشات :' + str(menu_restaureant.keys) + str(menu_cofe.keys)
+#     final_order += '\n'+'تاریخ ثبت سفارش :' + \
+#         str(time.ctime(time.time())) + 'روز خوبی را برای شما ارزومندیم :)'
+#     query.edit_message_text(final_order)
+# # Responses
+#     # Privet_Chat
 
 
 def handler_response(text: str):
@@ -153,8 +143,6 @@ if __name__ == '__main__':
     app.add_handler(CommandHandler('contact', contact))
     app.add_handler(CommandHandler('restaurant', restaurant))
     app.add_handler(CommandHandler('menu', menu))
-    # app.add_handler(CommandHandler('order_food', order_food))
-    # app.add_handler(CommandHandler('order_cofe'), order_cofe)
     # app.add_handler(CallbackQuery(show_Receipt))
 
     # Message
