@@ -158,13 +158,15 @@ if __name__ == '__main__':
     print('Starting BOT ...')
     app = Application.builder().token(TOKEN).build()
 
-# Commands
+    # Commands
     app.add_handler(CommandHandler('start', start))
     app.add_handler(CommandHandler('help', help))
     app.add_handler(CommandHandler('content', content))
     app.add_handler(CommandHandler('contact', contact))
     app.add_handler(CommandHandler('restaurant', restaurant))
     app.add_handler(CommandHandler('menu', menu))
+
+    # CallbackQueryHandler
     app.add_handler(CallbackQueryHandler(show_Receipt))
 
     # Message
