@@ -110,7 +110,7 @@ async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def show_recipte(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_orders = ORDERS.get(update.message.from_user.id, [])
 
-    text = 'رسید شما: \n'
+    text = 'رسید شما🛒\n\n'
     total_price = 0
     for order_id in user_orders:
         if str(order_id)[0] == '4':
@@ -126,8 +126,8 @@ async def show_recipte(update: Update, context: ContextTypes.DEFAULT_TYPE):
         text += f"{emoji}{item['name']} - {item['price']} تومان\n"
         total_price += item['price']
 
-    ship_price = 1 * total_price / 100
-    tax = 2 * total_price / 100
+    ship_price = int(1 * total_price / 100)
+    tax = int(2 * total_price / 100)
     total_price = total_price + tax + ship_price
     text += f'\n\nبسته‌بندی و ارسال: {ship_price}\nمالیات: {tax}\nهزینه قابل پرداخت: {total_price}'
 
