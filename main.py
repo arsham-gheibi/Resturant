@@ -109,36 +109,42 @@ async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def show_recipte(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_orders = ORDERS.get(update.message.from_user.id, [])
-
     text = 'رسید شما🛒\n\n'
     total_price = 0
-    for order_id in user_orders:
-        if str(order_id)[0] == '4':
-            item = MENU_RESTURANT[order_id]
-            emoji = '🥙'
-        elif str(order_id)[0] == '3':
-            item = MENU_CAFE[order_id]
-            emoji = '🧋'
-        elif str(order_id)[0] == '2':
-            item = MENU_BACKERY[order_id]
-            emoji = '🥖'
 
-        text += f"{emoji}{item['name']} - {item['price']} تومان\n"
-        total_price += item['price']
+    if len(user_orders) > 0:
+        for order_id in user_orders:
+            if str(order_id)[0] == '4':
+                item = MENU_RESTURANT[order_id]
+                emoji = '🥙'
+            elif str(order_id)[0] == '3':
+                item = MENU_CAFE[order_id]
+                emoji = '🧋'
+            elif str(order_id)[0] == '2':
+                item = MENU_BACKERY[order_id]
+                emoji = '🥖'
 
-    ship_price = int(1 * total_price / 100)
-    tax = int(2 * total_price / 100)
-    total_price = total_price + tax + ship_price
-    text += f'\n\nبسته‌بندی و ارسال: {ship_price} تومان\nمالیات: {tax} تومان\nهزینه قابل پرداخت: {total_price} تومان'
+            text += f"{emoji}{item['name']} - {item['price']} تومان\n"
+            total_price += item['price']
 
-    button_list = [[
-        InlineKeyboardButton('پرداخت💳', callback_data='SUBMIT-ORDER')
-    ]]
+        ship_price = int(1 * total_price / 100)
+        tax = int(2 * total_price / 100)
+        total_price = total_price + tax + ship_price
+        text += f'\n\nبسته‌بندی و ارسال: {ship_price} تومان\nمالیات: {tax} تومان\nهزینه قابل پرداخت: {total_price} تومان'
 
-    await update.message.reply_text(
-        text,
-        reply_markup=InlineKeyboardMarkup(button_list)
-    )
+        button_list = [[
+            InlineKeyboardButton('پرداخت💳', callback_data='SUBMIT-ORDER')
+        ]]
+
+        await update.message.reply_text(
+            text,
+            reply_markup=InlineKeyboardMarkup(button_list)
+        )
+
+    else:
+        await update.message.reply_text(
+            'سبد خرید شما خالی است!'
+        )
 
 
 async def callback_query_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
