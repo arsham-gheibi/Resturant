@@ -1,6 +1,6 @@
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import MessageHandler, Application, CommandHandler, CallbackQueryHandler, filters, ContextTypes
-
+from datetime import datetime
 
 TOKEN = '6084342914:AAEik1o1xcL0yRgWvYuRPWkQiDSxBQV45nE'
 BOT_USERNAME = 'http://t.me/Restaurant212_bot'
@@ -24,25 +24,35 @@ MENU_CAFE = {
 }
 
 
+MENU_BACKERY = {
+    2667: {'name': 'کروسان', 'price': 25000},
+    2850: {'name': 'نان شیرمال', 'price': 7500},
+    2664: {'name': 'نان خرمایی', 'price': 5000},
+    2876: {'name': 'فوگاس', 'price': 10000},
+    2689: {'name': 'بریوش', 'price': 17000}
+}
+
 # Commands
+
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text('Wellcome to FreeZone restaurent. How can i serve you?')
+    await update.message.reply_text('Wellcome to our restaurent. How can we serve you?')
 
 
 async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text('''
-/start -> Wellcome to the BOT
-/help -> This particular massage
-/content -> About This BOT
-/contact -> contact with Admin
-/restaurant ->  About restaurent
-/menu -> History of the restaurent
-/order ->Opening the menu for the customer
+/start -> Wellcome to the BOT :)
+/help -> This particular massage !
+/content -> About This BOT !
+/contact -> contact with Admin !
+/restaurant ->  About restaurent !
+/menu -> See the menu of resaurants & order from here !
+/show_Receipt -> Shows the result of the food serve !
 ''')
 
 
 async def content(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text('')
+    await update.message.reply_text('this is an AI restaurant that get your order & give a recipe back !')
 
 
 async def contact(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -50,7 +60,7 @@ async def contact(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def restaurant(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text('رستوران صدرسان \t کافه دیلی دوز')
+    await update.message.reply_text('رستوران صدرسان \t کافه دیلی دوز \t شهر نان')
 
 
 async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -82,8 +92,41 @@ async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=InlineKeyboardMarkup(button_list)
     )
 
+    button_list = []
+    for key, value in MENU_BACKERY.items():
+        button_list.append(
+            [InlineKeyboardButton(
+                f"{value['name']} - {value['price']} تومان",
+                callback_data=key
+            )]
+        )
 
-async def show_Receipt(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(
+        'شهر نان 🥖',
+        reply_markup=InlineKeyboardMarkup(button_list)
+    )
+
+
+async def show_recipte(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    print(update)
+    # query = update.callback_query
+    # await query.answer()
+
+    # user_orders = ORDERS.get(query.from_user.id, [])
+    # user_orders.append(data)
+
+    # ORDERS[query.from_user.id] = user_orders
+    # data = int(query.data)
+
+    # for key, value in ORDERS.items():
+    #     name = key
+    #     customs = ','.join(value)
+    # final_text = str(f"مشترک کد{name} , در تاریخ{datetime.now()}سفارشات شما ")
+    # final_text = str('\n\n' + f": سفارشات {customs} ثبت شدند ")
+    # await query.edit_message_text(final_text)
+
+
+async def callback_query_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
     data = int(query.data)
@@ -93,6 +136,9 @@ async def show_Receipt(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if item is None:
         item = MENU_CAFE.get(data)
         emoji = '🧋'
+        if item is None:
+            item = MENU_BACKERY.get(data)
+            emoji = '🥖'
 
     user_orders = ORDERS.get(query.from_user.id, [])
     user_orders.append(data)
@@ -165,9 +211,10 @@ if __name__ == '__main__':
     app.add_handler(CommandHandler('contact', contact))
     app.add_handler(CommandHandler('restaurant', restaurant))
     app.add_handler(CommandHandler('menu', menu))
+    app.add_handler(CommandHandler('show_recipte', show_recipte))
 
     # CallbackQueryHandler
-    app.add_handler(CallbackQueryHandler(show_Receipt))
+    app.add_handler(CallbackQueryHandler(callback_query_handler))
 
     # Message
     app.add_handler(MessageHandler(filters.TEXT, handle_message))
@@ -177,4 +224,5 @@ if __name__ == '__main__':
 
     # Polling_The_BOT
     print('Polling ....')
+
     app.run_polling(poll_interval=5)
