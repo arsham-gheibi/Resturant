@@ -110,32 +110,47 @@ async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def show_recipte(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_orders = ORDERS.get(update.message.from_user.id, [])
 
-    # for key, value in user_orders.items():
-    #     name = key
-    #     customs = ','.join(value)
+    text = 'رسید شما: \n'
+    total_price = 0
+    for order_id in user_orders:
+        if str(order_id)[0] == '4':
+            item = MENU_RESTURANT[order_id]
+            emoji = '🥙'
+        elif str(order_id)[0] == '3':
+            item = MENU_CAFE[order_id]
+            emoji = '🧋'
+        elif str(order_id)[0] == '2':
+            item = MENU_BACKERY[order_id]
+            emoji = '🥖'
 
-    # final_text = str(f"مشترک کد{name} , در تاریخ{datetime.now()}سفارشات شما ")
-    # final_text = str('\n\n' + f": سفارشات {customs} ثبت شدند ")
+        text += f"{emoji}{item['name'] - item['price']} تومان\n"
+        total_price += item['price']
 
-    # await update.message.edit_text(final_text)
+    ship_price = 1 * total_price / 100
+    tax = 2 * total_price / 100
+    total_price = total_price + tax + ship_price
+    text += f'\n\nبسته‌بندی و ارسال: {ship_price}\nمالیات: {tax}\nهزینه قابل پرداخت: {total_price}'
+
+    await update.message.reply_text(text)
 
 
 async def callback_query_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    data = int(query.data)
+    order_id = int(query.data)
 
-    item = MENU_RESTURANT.get(data)
-    emoji = '🥙'
-    if item is None:
-        item = MENU_CAFE.get(data)
+    if str(order_id)[0] == '4':
+        item = MENU_RESTURANT[order_id]
+        emoji = '🥙'
+    elif str(order_id)[0] == '3':
+        item = MENU_CAFE[order_id]
         emoji = '🧋'
-        if item is None:
-            item = MENU_BACKERY.get(data)
-            emoji = '🥖'
+    elif str(order_id)[0] == '2':
+        item = MENU_BACKERY[order_id]
+        emoji = '🥖'
 
     user_orders = ORDERS.get(query.from_user.id, [])
-    user_orders.append(data)
+    user_orders.append(order_id)
     ORDERS[query.from_user.id] = user_orders
 
     await query.message.reply_text(
