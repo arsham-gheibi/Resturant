@@ -123,7 +123,7 @@ async def show_recipte(update: Update, context: ContextTypes.DEFAULT_TYPE):
             item = MENU_BACKERY[order_id]
             emoji = '🥖'
 
-        text += f"{emoji}{item['name'] - item['price']} تومان\n"
+        text += f"{emoji}{item['name']} - {item['price']} تومان\n"
         total_price += item['price']
 
     ship_price = 1 * total_price / 100
