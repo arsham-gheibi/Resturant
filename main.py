@@ -129,33 +129,47 @@ async def show_recipte(update: Update, context: ContextTypes.DEFAULT_TYPE):
     ship_price = int(1 * total_price / 100)
     tax = int(2 * total_price / 100)
     total_price = total_price + tax + ship_price
-    text += f'\n\nبسته‌بندی و ارسال: {ship_price}\nمالیات: {tax}\nهزینه قابل پرداخت: {total_price}'
+    text += f'\n\nبسته‌بندی و ارسال: {ship_price} تومان\nمالیات: {tax} تومان\nهزینه قابل پرداخت: {total_price} تومان'
 
-    await update.message.reply_text(text)
+    button_list = [[
+        InlineKeyboardButton('پرداخت💳', callback_data='SUBMIT-ORDER')
+    ]]
+
+    await update.message.reply_text(
+        text,
+        reply_markup=InlineKeyboardMarkup(button_list)
+    )
 
 
 async def callback_query_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    order_id = int(query.data)
 
-    if str(order_id)[0] == '4':
-        item = MENU_RESTURANT[order_id]
-        emoji = '🥙'
-    elif str(order_id)[0] == '3':
-        item = MENU_CAFE[order_id]
-        emoji = '🧋'
-    elif str(order_id)[0] == '2':
-        item = MENU_BACKERY[order_id]
-        emoji = '🥖'
+    if query.data == 'SUBMIT-ORDER':
+        ORDERS[query.from_user.id] = []
+        await query.message.reply_text(
+            'سفارش شما با موفقیت ثبت شد✅'
+        )
 
-    user_orders = ORDERS.get(query.from_user.id, [])
-    user_orders.append(order_id)
-    ORDERS[query.from_user.id] = user_orders
+    else:
+        order_id = int(query.data)
+        if str(order_id)[0] == '4':
+            item = MENU_RESTURANT[order_id]
+            emoji = '🥙'
+        elif str(order_id)[0] == '3':
+            item = MENU_CAFE[order_id]
+            emoji = '🧋'
+        elif str(order_id)[0] == '2':
+            item = MENU_BACKERY[order_id]
+            emoji = '🥖'
 
-    await query.message.reply_text(
-        f"{emoji}{item['name']} با موفقیت به سبد خرید اضافه شد"
-    )
+        user_orders = ORDERS.get(query.from_user.id, [])
+        user_orders.append(order_id)
+        ORDERS[query.from_user.id] = user_orders
+
+        await query.message.reply_text(
+            f"{emoji}{item['name']} با موفقیت به سبد خرید اضافه شد"
+        )
 
 
 def handler_response(text: str):
