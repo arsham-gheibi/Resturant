@@ -108,10 +108,10 @@ async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def show_recipte(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    print(update)
-    print(update.callback_query.from_user.id)
-    user_orders = ORDERS.get(update.from_user.id, [])
-    print(user_orders)
+    print(update, '\n\n')
+    print(update.message.from_user.id)
+    # user_orders = ORDERS.get(update.from_user.id, [])
+    # print(user_orders)
 
     # for key, value in user_orders.items():
     #     name = key
