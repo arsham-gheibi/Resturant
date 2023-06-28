@@ -108,22 +108,17 @@ async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def show_recipte(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    print(update)
-    # query = update.callback_query
-    # await query.answer()
+    user_orders = ORDERS.get(update.from_user.id, [])
+    print(user_orders)
 
-    # user_orders = ORDERS.get(query.from_user.id, [])
-    # user_orders.append(data)
-
-    # ORDERS[query.from_user.id] = user_orders
-    # data = int(query.data)
-
-    # for key, value in ORDERS.items():
+    # for key, value in user_orders.items():
     #     name = key
     #     customs = ','.join(value)
+
     # final_text = str(f"مشترک کد{name} , در تاریخ{datetime.now()}سفارشات شما ")
     # final_text = str('\n\n' + f": سفارشات {customs} ثبت شدند ")
-    # await query.edit_message_text(final_text)
+
+    # await update.message.edit_text(final_text)
 
 
 async def callback_query_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
